@@ -1,18 +1,18 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "registry.fullname" . }}ui
+  name: '{{ template "registry.fullname" . }}-ui'
   labels:
     app: {{ template "registry.name" . }}
     chart: {{ template "registry.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
-  type: {{ .Values.ServiceRegistryUI.type }}
+  type: {{ .Values.Service-RegistryUI.type }}
   ports:
-    - port: {{ .Values.ServiceRegistryUI.port }}
-      targetPort: {{ .Values.ServiceRegistryUI.targetport }}
-      nodePort: {{ .Values.ServiceRegistryUI.nodeport }}
+    - port: {{ .Values.Service-RegistryUI.port }}
+      targetPort: {{ .Values.Service-RegistryUI.targetport }}
+      nodePort: {{ .Values.Service-RegistryUI.nodeport }}
       protocol: TCP
       name: http
   selector:

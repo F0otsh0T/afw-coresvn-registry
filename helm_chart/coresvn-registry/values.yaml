@@ -63,7 +63,7 @@ Service:
 ########################################
 ## SERVICE VALUES FOR REGISTRYUI
 ##
-ServiceRegistryUI:
+Service-RegistryUI:
   type: NodePort
   port: 8080
   nodeport: 30401

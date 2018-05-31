@@ -16,11 +16,6 @@ Deployment:
   containerPort: 5000
   securityContext:
     privileged: true
-  volume:
-    name01: dockersocket
-    path01: /var/run/docker.sock
-    name02: registry-persistent-storage
-    path02: /var/lib/registry
   volumemount:
     name01: dockersocket
     path01: /var/run/docker.sock
@@ -40,6 +35,21 @@ Deployment:
   nodeSelector: {}
   tolerations: []
   affinity: {}
+
+########################################
+## VALUES FOR VOLUME
+##
+Volume:
+  name01: dockersocket
+  path01: /var/run/docker.sock
+  name02: registry-persistent-storage
+##
+## May not need to use hostPath::path
+## for local directory mounting if
+## using Rook/Block/Ceph::PVC/PV
+##
+  path02: /data/gluster/gvol0/registry
+
 
 ########################################
 ## SERVICE VALUES FOR REGISTRY
@@ -107,3 +117,36 @@ rbac:
   apiVersion: v1beta1
   # Cluster role reference
   roleRef: cluster-admin
+
+########################################
+## DEPLOYMENT VALUES FOR REGISTRYUI
+##
+Deployment-RegistryUI:
+  name: coresvn-registryui
+  replicaCount: 1
+  strategy: RollingUpdate
+  image:
+#    repository: registry
+    repository: hyper/docker-registry-web
+    tag: latest
+    pullPolicy: IfNotPresent
+  containerPort: 8080
+  securityContext:
+    privileged: true
+  volumemount:
+    name01: dockersocket
+    path01: /var/run/docker.sock
+  resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #  cpu: 100m
+  #  memory: 128Mi
+  # requests:
+  #  cpu: 100m
+  #  memory: 128Mi
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}

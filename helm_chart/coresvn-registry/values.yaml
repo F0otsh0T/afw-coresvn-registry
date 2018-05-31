@@ -37,7 +37,7 @@ Deployment:
   affinity: {}
 
 ########################################
-## VALUES FOR VOLUME
+## VOLUME VALUES FOR REGISTRY
 ##
 Volume:
   name01: dockersocket
@@ -58,6 +58,16 @@ Service:
   type: NodePort
   port: 5000
   nodeport: 30401
+  targetport: 5000
+
+########################################
+## SERVICE VALUES FOR REGISTRYUI
+##
+Service-RegistryUI:
+  type: NodePort
+  port: 8080
+  nodeport: 30401
+  targetport: 8080
 
 ########################################
 ## INGRESS VALUES FOR REGISTRY

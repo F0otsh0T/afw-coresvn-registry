@@ -11,7 +11,7 @@ spec:
   type: {{ .Values.Service.type }}
   ports:
     - port: {{ .Values.Service.port }}
-      targetPort: http
+      targetPort: {{ .Values.Service.targetport }}
       nodePort: {{ .Values.Service.nodeport }}
       protocol: TCP
       name: http
@@ -19,3 +19,23 @@ spec:
     app: {{ template "registry.name" . }}
     release: {{ .Release.Name }}
 ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ template "registry.fullname" . }}-ui"
+  labels:
+    app: {{ template "registry.name" . }}
+    chart: {{ template "registry.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  type: {{ .Values.Service-RegistryUI.type }}
+  ports:
+    - port: {{ .Values.Service-RegistryUI.port }}
+      targetPort: {{ .Values.Service-RegistryUI.targetport }}
+      nodePort: {{ .Values.Service-RegistryUI.nodeport }}
+      protocol: TCP
+      name: http
+  selector:
+    app: {{ template "registry.name" . }}
+    release: {{ .Release.Name }}

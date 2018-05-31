@@ -1,0 +1,79 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ template "registry.fullname" . }}
+  labels:
+    app: {{ template "registry.name" . }}
+    chart: {{ template "registry.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.Deployment.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "registry.name" . }}
+      release: {{ .Release.Name }}
+      tier: {{ template "registry.name" . }}
+  strategy:
+    type: {{ .Values.Deployment.strategy }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "registry.name" . }}
+        release: {{ .Release.Name }}
+        tier: {{ template "registry.name" . }}
+    spec:
+      volumes:
+        ## PARENT VOLUME FOR DOCKER SOCKET
+        - name: {{ .Values.Deployment.volume.name01 }}
+          hostPath:
+            path: {{ .Values.Deployment.volume.path01 }}
+        ## PARENT VOLUME FOR PERSISTENT REGISTRY STORAGE
+        - name: {{ .Values.Deployment.volume.name02 }}
+          persistentVolumeClaim:
+            claimName: {{ template "registry.fullname" . }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.Deployment.image.repository }}:{{ .Values.Deployment.image.tag }}"
+          imagePullPolicy: {{ .Values.Deployment.image.pullPolicy }}
+          securityContext:
+            privileged: {{ .Values.Deployment.securityContext.privileged }}
+          volumeMounts:
+          ## CONTAINER VOLUMEMOUNT FOR DOCKER SOCKET
+          - name: {{ .Values.Deployment.volumemount.name01 }}
+            mountPath: {{ .Values.Deployment.volumemount.path01 }}
+          ## CONTAINER VOLUMEMOUNT FOR PERSISTENT REGISTRY STORAGE
+          - name: {{ .Values.Deployment.volumemount.name02 }}
+            mountPath: {{ .Values.Deployment.volumemount.path02 }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.Deployment.containerPort }}
+              protocol: TCP
+#          livenessProbe:
+#            httpGet:
+#              path: /
+#              port: http
+#          initialDelaySeconds: 180
+#          timeoutSeconds: 5
+#          failureThreshold: 6
+#          readinessProbe:
+#            httpGet:
+#              path: /
+#              port: http
+#          initialDelaySeconds: 30
+#          timeoutSeconds: 3
+#          periodSeconds: 5
+          resources:
+{{ toYaml .Values.Deployment.resources | indent 12 }}
+    {{- with .Values.Deployment.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.Deployment.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.Deployment.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}

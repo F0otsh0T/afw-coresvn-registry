@@ -22,7 +22,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: "{{ template "registry.fullname" . }}-ui"
+  name: {{ template "registry.fullname" . }}-ui
   labels:
     app: {{ template "registry.name" . }}
     chart: {{ template "registry.chart" . }}

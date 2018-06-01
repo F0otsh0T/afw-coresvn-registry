@@ -1,18 +1,18 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: test
+  name: {{ template "registry.fullname" . }}
   labels:
     app: {{ template "registry.name" . }}
     chart: {{ template "registry.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
-  type: {{ .Values.ServiceRegistryUI.type }}
+  type: {{ .Values.Service.type }}
   ports:
-    - port: {{ .Values.ServiceRegistryUI.port }}
-      targetPort: {{ .Values.ServiceRegistryUI.targetport }}
-      nodePort: {{ .Values.ServiceRegistryUI.nodeport }}
+    - port: {{ .Values.Service.port }}
+      targetPort: {{ .Values.Service.targetport }}
+      nodePort: {{ .Values.Service.nodeport }}
       protocol: TCP
       name: http
   selector:

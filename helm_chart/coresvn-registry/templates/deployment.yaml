@@ -83,7 +83,7 @@ spec:
           - name: REGISTRY_URL
             value: http://localhost:5000/v2
           - name: REGISTRY_NAME
-            value: cluster-registry
+            value: afw-registry
 #          livenessProbe:
 #            httpGet:
 #              path: /

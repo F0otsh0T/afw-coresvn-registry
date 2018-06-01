@@ -57,7 +57,7 @@ Volume:
 Service:
   type: NodePort
   port: 5000
-  nodeport: 30500
+  nodeport: 30400
   targetport: 5000
 
 ########################################
@@ -66,7 +66,7 @@ Service:
 ServiceRegistryUI:
   type: NodePort
   port: 8080
-  nodeport: 30501
+  nodeport: 30401
   targetport: 8080
 
 ########################################

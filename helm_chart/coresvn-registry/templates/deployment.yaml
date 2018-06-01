@@ -25,11 +25,13 @@ spec:
     spec:
       volumes:
         ## PARENT VOLUME FOR DOCKER SOCKET
-        - name: {{ .Values.Deployment.volume.name01 }}
+        - name: {{ .Values.Volume.name01 }}
           hostPath:
-            path: {{ .Values.Deployment.volume.path01 }}
+            path: {{ .Values.Volume.path01 }}
         ## PARENT VOLUME FOR PERSISTENT REGISTRY STORAGE
-        - name: {{ .Values.Deployment.volume.name02 }}
+        - name: {{ .Values.Volume.name02 }}
+#          hostpath:
+#            path: {{ .Values.Volume.path02 }}
           persistentVolumeClaim:
             claimName: {{ template "registry.fullname" . }}
       containers:
@@ -49,6 +51,39 @@ spec:
             - name: http
               containerPort: {{ .Values.Deployment.containerPort }}
               protocol: TCP
+#          livenessProbe:
+#            httpGet:
+#              path: /
+#              port: http
+#          initialDelaySeconds: 180
+#          timeoutSeconds: 5
+#          failureThreshold: 6
+#          readinessProbe:
+#            httpGet:
+#              path: /
+#              port: http
+#          initialDelaySeconds: 30
+#          timeoutSeconds: 3
+#          periodSeconds: 5
+          resources:
+        - name: {{ .Values.DeploymentRegistryUI.name }}
+          image: "{{ .Values.DeploymentRegistryUI.image.repository }}:{{ .Values.DeploymentRegistryUI.image.tag }}"
+          imagePullPolicy: {{ .Values.DeploymentRegistryUI.image.pullPolicy }}
+          securityContext:
+            privileged: {{ .Values.DeploymentRegistryUI.securityContext.privileged }}
+          volumeMounts:
+          ## CONTAINER VOLUMEMOUNT FOR DOCKER SOCKET
+          - name: {{ .Values.DeploymentRegistryUI.volumemount.name01 }}
+            mountPath: {{ .Values.DeploymentRegistryUI.volumemount.path01 }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.DeploymentRegistryUI.containerPort }}
+              protocol: TCP
+          env:
+          - name: REGISTRY_URL
+            value: http://localhost:5000/v2
+          - name: REGISTRY_NAME
+            value: afw-registry
 #          livenessProbe:
 #            httpGet:
 #              path: /

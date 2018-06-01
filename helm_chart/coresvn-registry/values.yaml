@@ -66,7 +66,7 @@ Service:
 ServiceRegistryUI:
   type: NodePort
   port: 8080
-  nodeport: 30401
+  nodeport: 30402
   targetport: 8080
 
 ########################################

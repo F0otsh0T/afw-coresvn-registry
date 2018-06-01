@@ -66,18 +66,18 @@ spec:
 #          timeoutSeconds: 3
 #          periodSeconds: 5
           resources:
-        - name: {{ .Values.Deployment-RegistryUI.name }}
-          image: "{{ .Values.Deployment-RegistryUI.image.repository }}:{{ .Values.Deployment-RegistryUI.image.tag }}"
-          imagePullPolicy: {{ .Values.Deployment-RegistryUI.image.pullPolicy }}
+        - name: {{ .Values.DeploymentRegistryUI.name }}
+          image: "{{ .Values.DeploymentRegistryUI.image.repository }}:{{ .Values.DeploymentRegistryUI.image.tag }}"
+          imagePullPolicy: {{ .Values.DeploymentRegistryUI.image.pullPolicy }}
           securityContext:
-            privileged: {{ .Values.Deployment-RegistryUI.securityContext.privileged }}
+            privileged: {{ .Values.DeploymentRegistryUI.securityContext.privileged }}
           volumeMounts:
           ## CONTAINER VOLUMEMOUNT FOR DOCKER SOCKET
-          - name: {{ .Values.Deployment-RegistryUI.volumemount.name01 }}
-            mountPath: {{ .Values.Deployment-RegistryUI.volumemount.path01 }}
+          - name: {{ .Values.DeploymentRegistryUI.volumemount.name01 }}
+            mountPath: {{ .Values.DeploymentRegistryUI.volumemount.path01 }}
           ports:
             - name: http
-              containerPort: {{ .Values.Deployment-RegistryUI.containerPort }}
+              containerPort: {{ .Values.DeploymentRegistryUI.containerPort }}
               protocol: TCP
           env:
           - name: REGISTRY_URL

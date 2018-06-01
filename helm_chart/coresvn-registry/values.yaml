@@ -131,7 +131,7 @@ rbac:
 ########################################
 ## DEPLOYMENT VALUES FOR REGISTRYUI
 ##
-Deployment-RegistryUI:
+DeploymentRegistryUI:
   name: coresvn-registryui
   replicaCount: 1
   strategy: RollingUpdate

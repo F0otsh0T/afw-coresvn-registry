@@ -8,11 +8,11 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
-  type: {{ .Values.Service.type }}
+  type: {{ .Values.ServiceRegistryUI.type }}
   ports:
-    - port: {{ .Values.Service.port }}
-      targetPort: {{ .Values.Service.targetport }}
-      nodePort: {{ .Values.Service.nodeport }}
+    - port: {{ .Values.ServiceRegistryUI.port }}
+      targetPort: {{ .Values.ServiceRegistryUI.targetport }}
+      nodePort: {{ .Values.ServiceRegistryUI.nodeport }}
       protocol: TCP
       name: http
   selector:
